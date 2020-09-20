@@ -11,45 +11,47 @@ import utility.ConnectionManager;
 public class UserDAO implements UserDaoInterface {
 
 	public int signUp(User user) {
-		String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
-
-		int result = 0;
+		
+	
 		try
 		{
 			Connection connection = ConnectionManager.getConnection();
+			int result = 0;
+			String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
+
 			// Step 2:Create a statement using connection object
-			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL);
-			preparedStatement.setString(1,user.getEmail());
-			preparedStatement.setString(2,user.getPassword());
-			System.out.println(preparedStatement);
+			PreparedStatement st = connection.prepareStatement(INSERT_USERS_SQL);
+			st.setString(1,user.getEmail());
+			st.setString(2,user.getPassword());
+			System.out.println(st);
 			// Step 3: Execute the query or update query
-			result = preparedStatement.executeUpdate();
-		} catch (SQLException e) {
+			result = st.executeUpdate();
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return result;
+		return 0;
 	}
 	
 	public boolean loginUser(User user) {
-		boolean status = false;
+		
 		try{
 			Connection connection = ConnectionManager.getConnection();
-		
+			boolean status = false;
 				// Step 2:Create a statement using connection object
-		PreparedStatement preparedStatement = connection.prepareStatement("select * from users where email = ? and password = ? ");
+		PreparedStatement st = connection.prepareStatement("select * from users where email = ? and password = ? ");
 		
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getPassword());
+			st.setString(1, user.getEmail());
+			st.setString(2, user.getPassword());
 
-			System.out.println(preparedStatement);
-			ResultSet rs = preparedStatement.executeQuery();
+			System.out.println(st);
+			ResultSet rs = st.executeQuery();
 			status = rs.next();
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// process sql exception
 			System.out.println(e);
 		}
-		return status;
+		return false;
 	}
 
 }
